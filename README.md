@@ -1,5 +1,4 @@
-# Welcome to your Lovable project
-
+# Welcome to your Tender Project
 ## Project info
 
 **URL**: https://lovable.dev/projects/28d3ae96-18b1-4bf5-a5ff-01b892405d31
