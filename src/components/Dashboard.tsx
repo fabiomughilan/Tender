@@ -7,22 +7,28 @@ import { Building2, FileText, Search, Plus, LogOut, Bell, Settings, User } from 
 import CompanyProfile from './CompanyProfile';
 import TenderManagement from './TenderManagement';
 import CompanySearch from './CompanySearch';
-import { useToast } from "@/hooks/use-toast";
+import { useAuth } from '@/contexts/AuthContext';
+import { useCompany } from '@/hooks/useCompany';
 
 interface DashboardProps {
   currentUser: any;
   onLogout: () => void;
 }
 
-const Dashboard = ({ currentUser, onLogout }: DashboardProps) => {
+const Dashboard = ({ currentUser }: DashboardProps) => {
   const [activeTab, setActiveTab] = useState("overview");
-  const { toast } = useToast();
+  const { signOut } = useAuth();
+  const { company } = useCompany();
 
   const mockStats = {
     activeTenders: 12,
     applications: 8,
     companies: 156,
     successRate: 85
+  };
+
+  const handleLogout = async () => {
+    await signOut();
   };
 
   return (
@@ -37,7 +43,7 @@ const Dashboard = ({ currentUser, onLogout }: DashboardProps) => {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-900">TenderHub</h1>
-                <p className="text-sm text-gray-600">{currentUser?.companyName}</p>
+                <p className="text-sm text-gray-600">{company?.name}</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -47,7 +53,7 @@ const Dashboard = ({ currentUser, onLogout }: DashboardProps) => {
               <Button variant="ghost" size="sm">
                 <Settings className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="sm" onClick={onLogout}>
+              <Button variant="ghost" size="sm" onClick={handleLogout}>
                 <LogOut className="h-4 w-4" />
               </Button>
             </div>

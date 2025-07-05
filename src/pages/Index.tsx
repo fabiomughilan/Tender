@@ -1,38 +1,16 @@
 
 import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, Building2, FileText, Users, TrendingUp } from "lucide-react";
-import AuthForm from '@/components/AuthForm';
-import Dashboard from '@/components/Dashboard';
-import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
-  const { toast } = useToast();
+  const { user } = useAuth();
 
-  const handleAuthSuccess = (user: any) => {
-    setCurrentUser(user);
-    setIsAuthenticated(true);
-    toast({
-      title: "Welcome!",
-      description: "Successfully logged in to the platform.",
-    });
-  };
-
-  const handleLogout = () => {
-    setCurrentUser(null);
-    setIsAuthenticated(false);
-    toast({
-      title: "Logged out",
-      description: "Successfully logged out of the platform.",
-    });
-  };
-
-  if (isAuthenticated) {
-    return <Dashboard currentUser={currentUser} onLogout={handleLogout} />;
+  if (user) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return (
@@ -50,8 +28,8 @@ const Index = () => {
                 <p className="text-sm text-gray-600">B2B Tender Management Platform</p>
               </div>
             </div>
-            <Button variant="outline" className="hidden sm:flex">
-              Learn More
+            <Button onClick={() => window.location.href = '/auth'}>
+              Get Started
             </Button>
           </div>
         </div>
@@ -121,21 +99,53 @@ const Index = () => {
                 </CardContent>
               </Card>
             </div>
+
+            <div className="flex space-x-4">
+              <Button size="lg" onClick={() => window.location.href = '/auth'}>
+                Start Free Trial
+              </Button>
+              <Button variant="outline" size="lg">
+                Learn More
+              </Button>
+            </div>
           </div>
 
-          {/* Right side - Auth form */}
-          <div className="lg:pl-8">
-            <Card className="border-0 shadow-2xl bg-white/95 backdrop-blur">
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl font-bold text-gray-900">
-                  Get Started Today
+          {/* Right side - Benefits */}
+          <div className="space-y-6">
+            <Card className="border-0 shadow-xl bg-white/95 backdrop-blur">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold text-gray-900">
+                  Why Choose TenderHub?
                 </CardTitle>
-                <CardDescription className="text-gray-600">
-                  Join the leading B2B tender management platform
-                </CardDescription>
               </CardHeader>
-              <CardContent>
-                <AuthForm onAuthSuccess={handleAuthSuccess} />
+              <CardContent className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <div className="bg-green-100 rounded-full p-1">
+                    <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900">Streamlined Process</h4>
+                    <p className="text-sm text-gray-600">Reduce tender management time by 60%</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="bg-blue-100 rounded-full p-1">
+                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900">Better Matches</h4>
+                    <p className="text-sm text-gray-600">AI-powered company matching system</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="bg-purple-100 rounded-full p-1">
+                    <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900">Secure Platform</h4>
+                    <p className="text-sm text-gray-600">Enterprise-grade security and compliance</p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>

@@ -9,7 +9,175 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      applications: {
+        Row: {
+          company_id: string
+          created_at: string | null
+          id: string
+          proposal_text: string
+          proposed_budget: number | null
+          status: Database["public"]["Enums"]["application_status"] | null
+          tender_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          company_id: string
+          created_at?: string | null
+          id?: string
+          proposal_text: string
+          proposed_budget?: number | null
+          status?: Database["public"]["Enums"]["application_status"] | null
+          tender_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          company_id?: string
+          created_at?: string | null
+          id?: string
+          proposal_text?: string
+          proposed_budget?: number | null
+          status?: Database["public"]["Enums"]["application_status"] | null
+          tender_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "applications_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "applications_tender_id_fkey"
+            columns: ["tender_id"]
+            isOneToOne: false
+            referencedRelation: "tenders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      companies: {
+        Row: {
+          address: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          industry: Database["public"]["Enums"]["industry_type"]
+          logo_url: string | null
+          name: string
+          phone: string | null
+          updated_at: string | null
+          user_id: string
+          website: string | null
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          industry: Database["public"]["Enums"]["industry_type"]
+          logo_url?: string | null
+          name: string
+          phone?: string | null
+          updated_at?: string | null
+          user_id: string
+          website?: string | null
+        }
+        Update: {
+          address?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          industry?: Database["public"]["Enums"]["industry_type"]
+          logo_url?: string | null
+          name?: string
+          phone?: string | null
+          updated_at?: string | null
+          user_id?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      goods_services: {
+        Row: {
+          company_id: string
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "goods_services_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tenders: {
+        Row: {
+          budget: number | null
+          company_id: string
+          created_at: string | null
+          deadline: string
+          description: string
+          id: string
+          requirements: string | null
+          status: Database["public"]["Enums"]["tender_status"] | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          budget?: number | null
+          company_id: string
+          created_at?: string | null
+          deadline: string
+          description: string
+          id?: string
+          requirements?: string | null
+          status?: Database["public"]["Enums"]["tender_status"] | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          budget?: number | null
+          company_id?: string
+          created_at?: string | null
+          deadline?: string
+          description?: string
+          id?: string
+          requirements?: string | null
+          status?: Database["public"]["Enums"]["tender_status"] | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tenders_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +186,20 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      application_status: "pending" | "accepted" | "rejected"
+      industry_type:
+        | "Technology"
+        | "Manufacturing"
+        | "Healthcare"
+        | "Finance"
+        | "Construction"
+        | "Education"
+        | "Retail"
+        | "Transportation"
+        | "Energy"
+        | "Agriculture"
+        | "Other"
+      tender_status: "active" | "closed" | "draft"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +314,22 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      application_status: ["pending", "accepted", "rejected"],
+      industry_type: [
+        "Technology",
+        "Manufacturing",
+        "Healthcare",
+        "Finance",
+        "Construction",
+        "Education",
+        "Retail",
+        "Transportation",
+        "Energy",
+        "Agriculture",
+        "Other",
+      ],
+      tender_status: ["active", "closed", "draft"],
+    },
   },
 } as const
